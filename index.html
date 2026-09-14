@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#071420">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<title>Class Royale — Arène</title>
+<style>
+:root{
+  --bg:#06121d;
+  --panel:#081723;
+  --panel2:#0b1d2a;
+  --line:#1b3446;
+  --text:#fff;
+  --muted:#9aa7b7;
+  --yellow:#ffd21c;
+  --yellow2:#ffbd00;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:#02070c;color:#fff;font-family:"Montserrat",sans-serif}
+body{min-height:100vh}
+button{font-family:"Montserrat",sans-serif}
+.app{
+  width:min(100%,430px);
+  height:100dvh;
+  min-height:700px;
+  margin:auto;
+  background:
+    radial-gradient(circle at 54% -15%,rgba(24,58,80,.32),transparent 42%),
+    linear-gradient(180deg,#061521 0%,#07141f 48%,#06111a 100%);
+  position:relative;
+  overflow:hidden;
+}
+.screen{
+  position:absolute;inset:0;
+  padding:16px 16px 94px;
+  overflow-y:auto;
+}
+.status{
+  height:30px;display:flex;align-items:center;justify-content:space-between;
+  font-size:11px;font-weight:700;margin-bottom:8px;
+}
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;
+}
+.topbar h1{
+  margin:0;font-size:31px;line-height:1;font-weight:800;letter-spacing:-1.4px;
+}
+.bell{
+  width:47px;height:47px;border-radius:50%;
+  background:linear-gradient(180deg,#102435,#0a1b28);
+  border:1px solid #213d50;
+  display:grid;place-items:center;position:relative;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
+}
+.bell img{width:22px;height:22px;object-fit:contain}
+.bell .count{
+  position:absolute;right:-3px;top:-4px;width:22px;height:22px;border-radius:50%;
+  background:#ff1e2e;color:#fff;font-size:11px;font-weight:800;
+  display:grid;place-items:center;border:2px solid #07141f;
+}
+
+.segment{
+  display:grid;grid-template-columns:1fr 1fr;
+  background:rgba(5,17,27,.82);
+  border:1px solid #1e394d;
+  border-radius:28px;
+  padding:3px;
+  margin-bottom:10px;
+}
+.segment button{
+  height:42px;border-radius:24px;border:0;background:transparent;
+  color:#f0f3f7;font-size:11px;font-weight:500;
+}
+.segment button.active{
+  background:linear-gradient(180deg,#ffdd39,#ffc900);
+  color:#101010;font-weight:800;
+  box-shadow:0 0 18px rgba(255,210,28,.36);
+}
+
+.rank-list{display:flex;flex-direction:column;gap:6px}
+.rank-row{
+  height:50px;
+  border-radius:999px;
+  border:1px solid #193346;
+  background:rgba(8,24,36,.88);
+  display:grid;
+  grid-template-columns:42px 38px 1fr auto;
+  align-items:center;
+  gap:8px;
+  padding:0 11px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.01);
+}
+.rank-row.me{
+  border-color:#e7ba00;
+  background:linear-gradient(90deg,rgba(39,43,13,.86),rgba(45,39,6,.8));
+}
+.rank-num{
+  width:34px;height:34px;border-radius:50%;
+  background:#dfe5ec;color:#111;
+  display:grid;place-items:center;
+  font-size:18px;font-weight:800;
+}
+.rank-row:first-child .rank-num{background:var(--yellow)}
+.rank-row.me .rank-num{background:#eea62a}
+.class-avatar{
+  width:34px;height:34px;border-radius:50%;
+  object-fit:cover;border:2px solid #264458;
+}
+.rank-row strong{font-size:13px;font-weight:700}
+.credits{display:flex;align-items:center;gap:7px;font-size:15px;font-weight:500}
+.coin{width:21px;height:21px;object-fit:contain;filter:drop-shadow(0 0 5px rgba(255,202,0,.35))}
+
+.booster-zone{
+  margin-top:22px;
+  min-height:360px;
+  position:relative;
+  border-radius:26px;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 69% 45%,rgba(255,215,38,.44),transparent 33%),
+    radial-gradient(circle at 26% 54%,rgba(119,41,255,.38),transparent 43%),
+    #071625;
+  border:1px solid #1d374a;
+}
+.booster-zone img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:.98;
+}
+.booster-overlay{
+  position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(2,8,14,.16),transparent 48%);
+}
+.new-pill{
+  position:absolute;left:17px;top:27px;
+  background:#ff1a2f;
+  padding:9px 16px;border-radius:21px;
+  font-size:12px;font-weight:800;
+  transform:rotate(-8deg);
+  box-shadow:0 0 18px rgba(255,0,20,.45);
+}
+.booster-copy{
+  position:absolute;left:18px;top:72px;width:47%;
+}
+.booster-copy h2{
+  margin:0;font-size:31px;line-height:.9;font-weight:800;letter-spacing:-1.2px;
+}
+.booster-copy p{
+  margin:12px 0 16px;font-size:15px;line-height:1.15;color:#fff;
+}
+.open-btn{
+  height:43px;border:0;border-radius:24px;
+  background:var(--yellow);color:#111;font-weight:800;font-size:12px;padding:0 17px;
+  box-shadow:0 0 16px rgba(255,210,28,.32);
+}
+.booster-dots{
+  position:absolute;left:50%;bottom:18px;transform:translateX(-50%);
+  display:flex;gap:9px;
+}
+.booster-dots i{
+  width:11px;height:11px;border-radius:50%;background:#56606c;
+}
+.booster-dots i.active{
+  width:24px;border-radius:10px;background:#fff;
+}
+
+.bottom-menu{
+  position:absolute;
+  left:18px;right:18px;
+  bottom:max(15px,env(safe-area-inset-bottom));
+  height:62px;
+  border-radius:999px;
+  border:1px solid #233d50;
+  background:rgba(11,29,43,.98);
+  display:grid;grid-template-columns:repeat(3,1fr);
+  z-index:20;
+  box-shadow:0 12px 28px rgba(0,0,0,.24),inset 0 1px 0 rgba(255,255,255,.02);
+  overflow:hidden;
+}
+.nav{
+  border:0;background:transparent;color:#aab6c7;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;font-size:11px;font-weight:600;
+}
+.nav .ico{font-size:25px;line-height:1}
+.nav.active{color:var(--yellow)}
+
+.overlay{
+  position:absolute;inset:0;background:rgba(2,7,12,.94);
+  z-index:50;display:none;align-items:center;justify-content:center;padding:18px;
+}
+.overlay.show{display:flex}
+.modal{
+  width:100%;background:#0b1d2a;border:1px solid #28475a;border-radius:24px;padding:18px;
+}
+.modal h2{margin:0 0 10px}
+.close{
+  width:40px;height:40px;border-radius:50%;border:1px solid #2b485c;background:#112638;
+}
+@media(min-width:700px){
+  body{padding:20px}
+  .app{height:900px;border-radius:45px;box-shadow:0 20px 60px #000}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <section class="screen">
+    <div class="status"><span>9:41</span><span>▮▮▮ ⌁ ▰</span></div>
+
+    <div class="topbar">
+      <h1>Arène</h1>
+      <button class="bell" id="bellBtn" aria-label="Notifications">
+        <img src="assets/bell.png" alt="">
+        <span class="count">3</span>
+      </button>
+    </div>
+
+    <div class="segment">
+      <button class="active" data-rank="fortune">Classement Fortune</button>
+      <button data-rank="engagement">Classement Engagement</button>
+    </div>
+
+    <div class="rank-list" id="rankList"></div>
+
+    <div class="booster-zone">
+      <img src="assets/booster_vivid.png" alt="Booster du lundi">
+      <div class="booster-overlay"></div>
+      <span class="new-pill">Nouveau !</span>
+      <div class="booster-copy">
+        <h2>Booster<br>du lundi</h2>
+        <p>3 nouvelles cartes t’attendent !</p>
+        <button class="open-btn" id="openBooster">Ouvrir mon booster</button>
+      </div>
+      <div class="booster-dots"><i></i><i class="active"></i><i></i><i></i></div>
+    </div>
+  </section>
+
+  <nav class="bottom-menu">
+    <button class="nav"><img class="nav-icon" src="assets/nav_class.png" alt="">Ma classe</button>
+    <button class="nav active"><img class="nav-icon" src="assets/nav_arena.png" alt="">Arène</button>
+    <button class="nav"><img class="nav-icon" src="assets/nav_events.png" alt="">Événements</button>
+  </nav>
+
+  <div class="overlay" id="notifOverlay">
+    <div class="modal">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2>Notifications</h2><button class="close" data-close>×</button>
+      </div>
+      <p style="font-size:12px;color:#b4bfcc">3 nouvelles notifications liées à votre classe.</p>
+    </div>
+  </div>
+
+  <div class="overlay" id="boosterOverlay">
+    <div class="modal" style="text-align:center">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2>Booster du lundi</h2><button class="close" data-close>×</button>
+      </div>
+      <img src="assets/booster_vivid.png" style="width:100%;border-radius:18px;margin-top:10px">
+      <button class="open-btn" style="width:100%;margin-top:12px">Découvrir ma première carte</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const data={
+  fortune:[
+    ['TPROA','9 240'],
+    ['2PROA','8 910'],
+    ['1STHRB','8 420'],
+    ['1STHRA','7 980'],
+    ['TCAPC','7 610']
+  ],
+  engagement:[
+    ['1STHRB','94 pts'],
+    ['TPROA','91 pts'],
+    ['TCAPC','86 pts'],
+    ['2PROA','81 pts'],
+    ['1STHRA','77 pts']
+  ]
+};
+const avatars=[
+  'assets/class_1.png',
+  'assets/class_2.png',
+  'assets/class_3.png',
+  'assets/class_4.png',
+  'assets/class_5.png'
+];
+function render(type='fortune'){
+  const box=document.getElementById('rankList');
+  box.innerHTML='';
+  data[type].forEach((r,i)=>{
+    const row=document.createElement('div');
+    row.className='rank-row'+(r[0]==='1STHRB'?' me':'');
+    row.innerHTML=`
+      <div class="rank-num">${i+1}</div>
+      <img class="class-avatar" src="${avatars[i]}" alt="">
+      <strong>${r[0]}</strong>
+      <div class="credits"><img class="coin" src="assets/coin.png" alt="">${r[1]}</div>`;
+    box.appendChild(row);
+  });
+}
+render();
+document.querySelectorAll('[data-rank]').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('[data-rank]').forEach(x=>x.classList.toggle('active',x===btn));
+  render(btn.dataset.rank);
+}));
+document.getElementById('bellBtn').addEventListener('click',()=>document.getElementById('notifOverlay').classList.add('show'));
+document.getElementById('openBooster').addEventListener('click',()=>document.getElementById('boosterOverlay').classList.add('show'));
+document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>b.closest('.overlay').classList.remove('show')));
+</script>
+</body>
+</html>
