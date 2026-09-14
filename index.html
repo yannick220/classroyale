@@ -45,6 +45,7 @@ button{font-family:"Montserrat",sans-serif}
   font-size:11px;font-weight:700;margin-bottom:8px;
 }
 .topbar{
+  padding-top:18px;
   display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;
 }
 .topbar h1{
@@ -188,6 +189,7 @@ button{font-family:"Montserrat",sans-serif}
 }
 .nav .ico{font-size:25px;line-height:1}
 .nav.active{color:var(--yellow)}
+.nav span,.nav{letter-spacing:-0.1px}
 
 .overlay{
   position:absolute;inset:0;background:rgba(2,7,12,.94);
@@ -247,9 +249,7 @@ button{font-family:"Montserrat",sans-serif}
 <body>
 <div class="app">
   <section class="screen">
-    <div class="status"><span>9:41</span><span>▮▮▮ ⌁ ▰</span></div>
-
-    <div class="topbar">
+<div class="topbar">
       <h1>Arène</h1>
       <button class="bell" id="bellBtn" aria-label="Notifications">
         <svg viewBox="0 0 24 24" aria-hidden="true">
