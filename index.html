@@ -11,9 +11,9 @@
 <title>Class Royale — Arène</title>
 <style>
 :root{
-  --bg:#06121d;
-  --panel:#081723;
-  --panel2:#0b1d2a;
+  --bg:#02080d;
+  --panel:#040d14;
+  --panel2:#06121a;
   --line:#1b3446;
   --text:#fff;
   --muted:#9aa7b7;
@@ -30,8 +30,8 @@ button{font-family:"Montserrat",sans-serif}
   min-height:700px;
   margin:auto;
   background:
-    radial-gradient(circle at 54% -15%,rgba(24,58,80,.32),transparent 42%),
-    linear-gradient(180deg,#061521 0%,#07141f 48%,#06111a 100%);
+    radial-gradient(circle at 54% -15%,rgba(16,38,54,.18),transparent 40%),
+    linear-gradient(180deg,#020a11 0%,#030b12 48%,#01070b 100%);
   position:relative;
   overflow:hidden;
 }
@@ -57,7 +57,7 @@ button{font-family:"Montserrat",sans-serif}
   display:grid;place-items:center;position:relative;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.03);
 }
-.bell img{width:22px;height:22px;object-fit:contain}
+.bell svg{width:21px;height:21px;display:block;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .bell .count{
   position:absolute;right:-3px;top:-4px;width:22px;height:22px;border-radius:50%;
   background:#ff1e2e;color:#fff;font-size:11px;font-weight:800;
@@ -87,7 +87,7 @@ button{font-family:"Montserrat",sans-serif}
   height:50px;
   border-radius:999px;
   border:1px solid #193346;
-  background:rgba(8,24,36,.88);
+  background:rgba(3,12,19,.92);
   display:grid;
   grid-template-columns:42px 38px 1fr auto;
   align-items:center;
@@ -97,7 +97,7 @@ button{font-family:"Montserrat",sans-serif}
 }
 .rank-row.me{
   border-color:#e7ba00;
-  background:linear-gradient(90deg,rgba(39,43,13,.86),rgba(45,39,6,.8));
+  background:linear-gradient(90deg,rgba(28,28,8,.90),rgba(34,28,4,.88));
 }
 .rank-num{
   width:34px;height:34px;border-radius:50%;
@@ -172,7 +172,7 @@ button{font-family:"Montserrat",sans-serif}
   position:absolute;
   left:18px;right:18px;
   bottom:max(15px,env(safe-area-inset-bottom));
-  height:62px;
+  height:58px;
   border-radius:999px;
   border:1px solid #233d50;
   background:rgba(11,29,43,.98);
@@ -206,6 +206,43 @@ button{font-family:"Montserrat",sans-serif}
   .app{height:900px;border-radius:45px;box-shadow:0 20px 60px #000}
 }
 </style>
+
+<style>
+.booster-zone{
+  margin-top:18px;
+  min-height:365px;
+  position:relative;
+  border-radius:0;
+  overflow:visible;
+  background:transparent;
+  border:0;
+}
+.booster-zone>img{
+  position:absolute;
+  left:-12px;right:-12px;top:-4px;
+  width:calc(100% + 24px);
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  opacity:1;
+  border-radius:0;
+  -webkit-mask-image:linear-gradient(to bottom,transparent 0%,black 5%,black 94%,transparent 100%);
+  mask-image:linear-gradient(to bottom,transparent 0%,black 5%,black 94%,transparent 100%);
+}
+.booster-overlay,.new-pill,.booster-copy,.booster-dots{display:none!important}
+.booster-click{
+  position:absolute;
+  left:5%;
+  bottom:14%;
+  width:45%;
+  height:15%;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  z-index:4;
+}
+</style>
+
 </head>
 <body>
 <div class="app">
@@ -215,7 +252,10 @@ button{font-family:"Montserrat",sans-serif}
     <div class="topbar">
       <h1>Arène</h1>
       <button class="bell" id="bellBtn" aria-label="Notifications">
-        <img src="assets/bell.png" alt="">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/>
+          <path d="M10 21h4"/>
+        </svg>
         <span class="count">3</span>
       </button>
     </div>
@@ -228,16 +268,8 @@ button{font-family:"Montserrat",sans-serif}
     <div class="rank-list" id="rankList"></div>
 
     <div class="booster-zone">
-      <img src="assets/booster_vivid.png" alt="Booster du lundi">
-      <div class="booster-overlay"></div>
-      <span class="new-pill">Nouveau !</span>
-      <div class="booster-copy">
-        <h2>Booster<br>du lundi</h2>
-        <p>3 nouvelles cartes t’attendent !</p>
-        <button class="open-btn" id="openBooster">Ouvrir mon booster</button>
-      </div>
-      <div class="booster-dots"><i></i><i class="active"></i><i></i><i></i></div>
-    </div>
+      <img src="assets/booster_full_seamless.jpg" alt="Booster du lundi">
+      <button class="booster-click" id="openBooster" aria-label="Ouvrir mon booster"></button></div>
   </section>
 
   <nav class="bottom-menu">
@@ -284,11 +316,11 @@ const data={
   ]
 };
 const avatars=[
-  'assets/class_1.png',
-  'assets/class_2.png',
-  'assets/class_3.png',
-  'assets/class_4.png',
-  'assets/class_5.png'
+  'assets/friends_1.png',
+  'assets/friends_2.png',
+  'assets/friends_3.png',
+  'assets/friends_4.png',
+  'assets/friends_5.png'
 ];
 function render(type='fortune'){
   const box=document.getElementById('rankList');
